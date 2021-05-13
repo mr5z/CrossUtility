@@ -10,6 +10,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/mr5z/CrossUtility</RepositoryUrl>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/mr5z/CrossUtility</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

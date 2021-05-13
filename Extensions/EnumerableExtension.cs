@@ -32,5 +32,10 @@ namespace CrossUtility.Extensions
 
             return default;
         }
+
+        public static bool IsNullOrEmpty<TModel>(this IEnumerable<TModel>? enumerable)
+        {
+            return enumerable == null || !enumerable.Any();
+        }
     }
 }

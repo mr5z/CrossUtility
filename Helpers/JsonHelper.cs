@@ -17,7 +17,7 @@ namespace CrossUtility.Helpers
         public static IEnumerable<KeyValuePair<string, string?>> ToKeyValuePairs<T>(
             T model,
             BindingFlags flags = BindingFlags.Public | BindingFlags.Instance)
-            where T : class
+            where T : notnull
         {
             var type = model.GetType();
             var properties = type.GetProperties(flags);
