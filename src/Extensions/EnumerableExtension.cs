@@ -19,17 +19,18 @@ public static class EnumerableExtension
         Expression<Func<TModel, TProperty>> expression)
     {
         var first = source.FirstOrDefault();
-        if (first != null)
-        {
-            var propertyName = expression.GetMemberName();
-            var type = typeof(TModel);
-            var propInfo = type.GetProperty(propertyName);
-            return propInfo == null
-                ? throw new InvalidOperationException($"Cannot retrieve '{type.Name}.{propertyName}'")
-                : (TProperty)propInfo.GetValue(first, null);
-        }
+        
+        if (first == null)
+            return default;
 
-        return default;
+        var propertyName = expression.GetMemberName();
+        var type = typeof(TModel);
+        var propInfo = type.GetProperty(propertyName);
+        
+        return propInfo == null
+            ? throw new InvalidOperationException($"Cannot retrieve '{type.Name}.{propertyName}'")
+            : (TProperty)propInfo.GetValue(first, null);
+
     }
 
     public static bool IsNullOrEmpty<TModel>(this IEnumerable<TModel>? enumerable)
