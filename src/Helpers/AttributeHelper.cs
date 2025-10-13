@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace CrossUtility.Helpers;
+namespace Nkraft.CrossUtility.Helpers;
 
 static class AttributeHelper
 {
@@ -28,6 +28,6 @@ static class AttributeHelper
         var targetProperty = properties?.FirstOrDefault(e => e.Name == propertyName);
         var value = targetProperty?.GetValue(attribute, null);
 
-        return (value == default) ? default : (T)value;
+        return value == default ? default : (T)value;
     }
 }

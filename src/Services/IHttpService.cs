@@ -3,13 +3,14 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CrossUtility.Services;
+namespace Nkraft.CrossUtility.Services;
 
 public interface IHttpService
 {
     HttpClient HttpClient { get; }
     
     Task<T> GetAsync<T>(string relativePath, CancellationToken cancellationToken = default);
+
     Task<T> GetAsync<T>(Uri requestUri, CancellationToken cancellationToken = default);
     
     Task<TResponse> PostFormAsync<TResponse, TRequest>(

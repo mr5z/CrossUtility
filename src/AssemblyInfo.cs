@@ -1,3 +1,3 @@
-﻿namespace System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
-public class IsExternalInit { }
+[assembly: InternalsVisibleTo("Nkraft.MvvmEssentials")]

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CrossUtility.Extensions;
+namespace Nkraft.CrossUtility.Extensions;
 
 public static class TaskExtension
 {

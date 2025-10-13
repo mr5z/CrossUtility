@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace CrossUtility.Helpers;
+namespace Nkraft.CrossUtility.Helpers;
 
 public static class Contract
 {

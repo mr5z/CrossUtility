@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace CrossUtility.Helpers;
+namespace Nkraft.CrossUtility.Helpers;
 
 public static class JsonHelper
 {

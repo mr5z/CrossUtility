@@ -1,11 +1,11 @@
-﻿using CrossUtility.Helpers;
+﻿using Nkraft.CrossUtility.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace CrossUtility.Extensions;
+namespace Nkraft.CrossUtility.Extensions;
 
-public static class ObjectExtension
+internal static class ObjectExtension
 {
     public static IDictionary<string, object> AsDictionary(
         this object source,

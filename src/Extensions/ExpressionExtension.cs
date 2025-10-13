@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace CrossUtility.Extensions;
+namespace Nkraft.CrossUtility.Extensions;
 
 public static class ExpressionExtension
 {

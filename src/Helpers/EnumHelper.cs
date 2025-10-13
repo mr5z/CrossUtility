@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CrossUtility.Helpers;
+namespace Nkraft.CrossUtility.Helpers;
 
 public static class EnumHelper
 {

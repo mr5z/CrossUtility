@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace CrossUtility.Extensions;
+namespace Nkraft.CrossUtility.Extensions;
 
-public static class EnumerableExtension
+internal static class EnumerableExtension
 {
     /// <summary>
     /// Retrieve the first element from the <typeparamref name="IEnumerable" />&lt;<typeparamref name="TModel"/>&gt; if any, and return the property value from the input expression.
@@ -28,7 +28,7 @@ public static class EnumerableExtension
         var propInfo = type.GetProperty(propertyName);
         
         return propInfo == null
-            ? throw new InvalidOperationException($"Cannot retrieve '{type.Name}.{propertyName}'")
+            ? throw new InvalidOperationException($"Cannot retrieve '{type.Name}.{propertyName}'.")
             : (TProperty)propInfo.GetValue(first, null);
 
     }
