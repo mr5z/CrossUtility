@@ -139,7 +139,7 @@ public static class Result
 	public static IResult Fail(ErrorCode errorCode, string errorMessage)
 		=> new Result<Unit>(errorCode, errorMessage);
 
-	public static IResult Fail(ErrorCode errorCode, string format, params object[] args)
+	public static IResult Fail(ErrorCode errorCode, string format, params object?[] args)
 		=> new Result<Unit>(errorCode, format, args);
 
 	public static Result<TValue> Ok<TValue>(TValue value)
@@ -148,6 +148,6 @@ public static class Result
 	public static Result<TValue> Fail<TValue>(ErrorCode errorCode, string errorMessage)
 		=> new(errorCode, errorMessage);
 
-	public static Result<TValue> Fail<TValue>(ErrorCode errorCode, string format, params object[] args)
+	public static Result<TValue> Fail<TValue>(ErrorCode errorCode, string format, params object?[] args)
 		=> new(errorCode, format, args);
 }

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Nkraft.CrossUtility.Extensions;
 
-public static class TaskExtension
+internal static class TaskExtension
 {
     public static void FireAndForget(this Task task, Action<Exception>? exceptionHandler = null)
     {
