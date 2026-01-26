@@ -79,7 +79,7 @@ public sealed class Result<T> : IResult
 		return false;
 	}
 
-	private static string FormatString(string format, params object?[] args)
+	private static string FormatString(string format, params object?[]? args)
 	{
 		if (string.IsNullOrWhiteSpace(format))
 		{
@@ -101,8 +101,8 @@ public sealed class Result<T> : IResult
 			sb.Append(format, lastIndex, m.Index - lastIndex);
 			lastIndex = m.Index + m.Length;
 
-			string name = m.Groups[1].Value;
-			if (names.TryGetValue(name, out int index) == false)
+			var name = m.Groups[1].Value;
+			if (names.TryGetValue(name, out var index) == false)
 			{
 				if (count >= args.Length)
 				{
@@ -113,7 +113,7 @@ public sealed class Result<T> : IResult
 				names[name] = index;
 			}
 
-			object? value = index < args.Length ? args[index] : null;
+			var value = index < args.Length ? args[index] : null;
 			sb.Append(value ?? string.Empty);
 		}
 
@@ -122,7 +122,7 @@ public sealed class Result<T> : IResult
 	}
 
 	private static readonly Regex PlaceholderRegex =
-		new(@"\{(\w+)\}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		new(@"/{(\w+)/}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
 }
 

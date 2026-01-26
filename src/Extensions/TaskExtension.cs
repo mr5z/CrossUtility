@@ -6,21 +6,24 @@ namespace Nkraft.CrossUtility.Extensions;
 
 internal static class TaskExtension
 {
-    public static void FireAndForget(this Task task, Action<Exception>? exceptionHandler = null)
+    extension(Task task)
     {
-        _ = task.ContinueWith(t =>
+        public void FireAndForget(Action<Exception>? exceptionHandler = null)
         {
-            ReportException(t, exceptionHandler);
-        });
-    }
+            _ = task.ContinueWith(t =>
+            {
+                ReportException(t, exceptionHandler);
+            });
+        }
 
-    public static void FireAndForget(this Task task, Action completion, Action<Exception>? exceptionHandler = null)
-    {
-        _ = task.ContinueWith(t =>
+        public void FireAndForget(Action completion, Action<Exception>? exceptionHandler = null)
         {
-            completion();
-            ReportException(t, exceptionHandler);
-        });
+            _ = task.ContinueWith(t =>
+            {
+                completion();
+                ReportException(t, exceptionHandler);
+            });
+        }
     }
 
     public static void FireAndForget<T>(this Task<T> task, Action<Exception>? exceptionHandler = null)
@@ -67,8 +70,8 @@ internal static class TaskExtension
         if (!task.IsFaulted)
             return;
 
-        Exception ex = task.Exception;
-        while (ex.InnerException != null)
+        Exception? ex = task.Exception;
+        while (ex is { InnerException: not null })
             ex = ex.InnerException;
         exceptionHandler?.Invoke(ex);
     }

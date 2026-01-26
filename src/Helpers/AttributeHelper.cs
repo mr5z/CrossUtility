@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Nkraft.CrossUtility.Helpers;
 
-static class AttributeHelper
+internal static class AttributeHelper
 {
     public static T? GetValue<T>(
         PropertyInfo propertyInfo,
@@ -13,10 +13,7 @@ static class AttributeHelper
     {
         var attributes = propertyInfo.GetCustomAttributes();
         var targetAttribute = attributes?.FirstOrDefault(e => e.GetType().FullName == targetAttributeName);
-        if (targetAttribute == default)
-            return default;
-
-        return GetValue<T>(targetAttribute, targetAttributePropertyName);
+        return targetAttribute == default ? default : GetValue<T>(targetAttribute, targetAttributePropertyName);
     }
 
     public static T? GetValue<T>(Attribute? attribute, string propertyName)

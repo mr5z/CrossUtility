@@ -20,7 +20,7 @@ public static class Contract
     public static void InvalidArgumentIf<T>(T arg, params Type[] expectedTypes) where T : notnull
     {
         var type = arg.GetType();
-        if (!expectedTypes.Any(t => t == type))
+        if (expectedTypes.Any(t => t == type) == false)
         {
             var expectedTypeList = string.Join(", ", expectedTypes.Select(it => it.Name));
             throw new ArgumentException($"Invalid type '{type.Name}', expecting any of: [{expectedTypeList}]");

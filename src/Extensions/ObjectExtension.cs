@@ -7,22 +7,21 @@ namespace Nkraft.CrossUtility.Extensions;
 
 internal static class ObjectExtension
 {
-    public static IDictionary<string, object> AsDictionary(
-        this object source,
-        BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.Instance)
+    extension(object source)
     {
-        return source.GetType().GetProperties(bindingAttr).ToDictionary
-        (
-            propInfo => propInfo.Name,
-            propInfo => propInfo.GetValue(source, null)
-        );
-    }
+        public IDictionary<string, object> AsDictionary(BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.Instance)
+        {
+            return source.GetType().GetProperties(bindingAttr).ToDictionary
+            (
+                propInfo => propInfo.Name,
+                propInfo => propInfo.GetValue(source, null)
+            );
+        }
 
-    public static IDictionary<string, string?> AsStringDictionary(
-        this object source,
-        BindingFlags flags = BindingFlags.Public | BindingFlags.Instance)
-    {
-        var properties = JsonHelper.ToKeyValuePairs(source, flags);
-        return new Dictionary<string, string?>(properties);
+        public IDictionary<string, string?> AsStringDictionary(BindingFlags flags = BindingFlags.Public | BindingFlags.Instance)
+        {
+            var properties = JsonHelper.ToKeyValuePairs(source, flags);
+            return new Dictionary<string, string?>(properties);
+        }
     }
 }
