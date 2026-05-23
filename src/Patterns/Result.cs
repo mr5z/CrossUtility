@@ -70,9 +70,9 @@ public sealed class Result<T> : IResult
 
 	public bool TryGetValue([NotNullWhen(true)] out T? value)
 	{
-		if (IsSuccess && Value is T outValue)
+		if (IsSuccess && Value is not null)
 		{
-			value = outValue;
+			value = Value;
 			return true;
 		}
 		value = default;
@@ -122,7 +122,7 @@ public sealed class Result<T> : IResult
 	}
 
 	private static readonly Regex PlaceholderRegex =
-		new(@"/{(\w+)/}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+		new(@"\{(\w+)\}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
 }
 
