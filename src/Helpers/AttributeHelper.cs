@@ -13,7 +13,7 @@ internal static class AttributeHelper
     {
         var attributes = propertyInfo.GetCustomAttributes();
         var targetAttribute = attributes?.FirstOrDefault(e => e.GetType().FullName == targetAttributeName);
-        return targetAttribute == default ? default : GetValue<T>(targetAttribute, targetAttributePropertyName);
+        return targetAttribute is null ? default : GetValue<T>(targetAttribute, targetAttributePropertyName);
     }
 
     public static T? GetValue<T>(Attribute? attribute, string propertyName)
@@ -25,6 +25,6 @@ internal static class AttributeHelper
         var targetProperty = properties?.FirstOrDefault(e => e.Name == propertyName);
         var value = targetProperty?.GetValue(attribute, null);
 
-        return value == default ? default : (T)value;
+        return value is null ? default : (T)value;
     }
 }

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Nkraft.CrossUtility.Extensions;
 
-public static class ExpressionExtension
+internal static class ExpressionExtension
 {
     extension<T>(Expression<T> expression)
     {

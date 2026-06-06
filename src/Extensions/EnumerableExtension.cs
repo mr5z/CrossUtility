@@ -20,7 +20,7 @@ internal static class EnumerableExtension
     {
         var first = source.FirstOrDefault();
         
-        if (first == null)
+        if (first is null)
             return default;
 
         var propertyName = expression.GetMemberName();
@@ -34,7 +34,7 @@ internal static class EnumerableExtension
     }
 
     public static bool IsNullOrEmpty<TModel>(this IEnumerable<TModel>? enumerable)
-        => enumerable == null || !enumerable.Any();
+        => enumerable is null || !enumerable.Any();
 
     public static IEnumerable<T> WhereNot<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
         => enumerable.Where(e => !predicate(e));

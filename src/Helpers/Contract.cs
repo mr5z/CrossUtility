@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Nkraft.CrossUtility.Helpers;
 
-public static class Contract
+internal static class Contract
 {
     public static void NotNull<T>(T? obj)
     {

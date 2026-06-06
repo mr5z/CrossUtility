@@ -20,9 +20,7 @@ public static class QueryStringHelper
     public static Dictionary<string, object> ToDictionary(string queryString)
     {
         if (string.IsNullOrWhiteSpace(queryString))
-        {
             return [];
-        }
 
         if (queryString.StartsWith('?'))
         {

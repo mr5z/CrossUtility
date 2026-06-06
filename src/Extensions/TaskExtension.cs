@@ -24,33 +24,36 @@ internal static class TaskExtension
                 ReportException(t, exceptionHandler);
             });
         }
-    }
 
-    public static void FireAndForget<T>(this Task<T> task, Action<Exception>? exceptionHandler = null)
-    {
-        _ = task.ContinueWith(t =>
+        public Task TimeoutAfter(TimeSpan timeout)
         {
-            ReportException(t, exceptionHandler);
-        });
+            return TimeoutAfterImpl(task, timeout);
+        }
     }
 
-    public static void FireAndForget<T>(this Task<T> task, Action completion, Action<Exception>? exceptionHandler = null)
+    extension<T>(Task<T> task)
     {
-        _ = task.ContinueWith(t =>
+        public void FireAndForget(Action<Exception>? exceptionHandler = null)
         {
-            completion();
-            ReportException(t, exceptionHandler);
-        });
-    }
+            _ = task.ContinueWith(t =>
+            {
+                ReportException(t, exceptionHandler);
+            });
+        }
 
-    public static Task TimeoutAfter<TResult>(this Task<TResult> task, TimeSpan timeout)
-    {
-        return TimeoutAfterImpl(task, timeout);
-    }
+        public void FireAndForget(Action completion, Action<Exception>? exceptionHandler = null)
+        {
+            _ = task.ContinueWith(t =>
+            {
+                completion();
+                ReportException(t, exceptionHandler);
+            });
+        }
 
-    public static Task TimeoutAfter(this Task task, TimeSpan timeout)
-    {
-        return TimeoutAfterImpl(task, timeout);
+        public Task TimeoutAfter(TimeSpan timeout)
+        {
+            return TimeoutAfterImpl(task, timeout);
+        }
     }
 
     // Taken from https://stackoverflow.com/a/22078975/2304737
@@ -67,7 +70,7 @@ internal static class TaskExtension
 
     private static void ReportException(Task task, Action<Exception>? exceptionHandler)
     {
-        if (!task.IsFaulted)
+        if (task.IsFaulted == false)
             return;
 
         Exception? ex = task.Exception;

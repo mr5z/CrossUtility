@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Nkraft.CrossUtility.Helpers;
 
-public static class EnumHelper
+internal static class EnumHelper
 {
     public static Dictionary<TKey, TValue?> EnumDefaultValues<TKey, TValue>()
         where TKey : struct, Enum

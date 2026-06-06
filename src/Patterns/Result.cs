@@ -32,7 +32,51 @@ public interface IResult
 	string? ErrorMessage { get; }
 }
 
-public sealed class Result<T> : IResult
+public abstract class ResultBase
+{
+	protected static readonly Regex PlaceholderRegex =
+		new(@"\{(\w+)\}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+	protected static string FormatString(string format, params object?[]? args)
+	{
+		if (string.IsNullOrWhiteSpace(format))
+			return string.Empty;
+
+		if (args is null || args.Length == 0 || format.IndexOf('{') < 0)
+			return format;
+
+		var names = new Dictionary<string, int>(StringComparer.Ordinal);
+		int count = 0;
+		var sb = new StringBuilder();
+		int lastIndex = 0;
+
+		foreach (Match m in PlaceholderRegex.Matches(format))
+		{
+			sb.Append(format, lastIndex, m.Index - lastIndex);
+			lastIndex = m.Index + m.Length;
+
+			var name = m.Groups[1].Value;
+			if (names.TryGetValue(name, out var index) == false)
+			{
+				if (count >= args.Length)
+				{
+					sb.Append(m.Value);
+					continue;
+				}
+				index = count++;
+				names[name] = index;
+			}
+
+			var value = index < args.Length ? args[index] : null;
+			sb.Append(value ?? string.Empty);
+		}
+
+		sb.Append(format, lastIndex, format.Length - lastIndex);
+		return sb.ToString();
+	}
+}
+
+public sealed class Result<T> : ResultBase, IResult
 {
 	public T? Value { get; }
 
@@ -78,52 +122,6 @@ public sealed class Result<T> : IResult
 		value = default;
 		return false;
 	}
-
-	private static string FormatString(string format, params object?[]? args)
-	{
-		if (string.IsNullOrWhiteSpace(format))
-		{
-			return string.Empty;
-		}
-
-		if (args is null || args.Length == 0)
-		{
-			return format;
-		}
-
-		var names = new Dictionary<string, int>(StringComparer.Ordinal);
-		int count = 0;
-		var sb = new StringBuilder();
-		int lastIndex = 0;
-
-		foreach (Match m in PlaceholderRegex.Matches(format))
-		{
-			sb.Append(format, lastIndex, m.Index - lastIndex);
-			lastIndex = m.Index + m.Length;
-
-			var name = m.Groups[1].Value;
-			if (names.TryGetValue(name, out var index) == false)
-			{
-				if (count >= args.Length)
-				{
-					sb.Append(m.Value);
-					continue;
-				}
-				index = count++;
-				names[name] = index;
-			}
-
-			var value = index < args.Length ? args[index] : null;
-			sb.Append(value ?? string.Empty);
-		}
-
-		sb.Append(format, lastIndex, format.Length - lastIndex);
-		return sb.ToString();
-	}
-
-	private static readonly Regex PlaceholderRegex =
-		new(@"\{(\w+)\}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
-
 }
 
 public static class Result
