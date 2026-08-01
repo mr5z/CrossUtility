@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nkraft.CrossUtility.Extensions;
@@ -16,18 +15,13 @@ internal static class TaskExtension
             });
         }
 
-        public void FireAndForget(Action completion, Action<Exception>? exceptionHandler = null)
+        public void FireAndForget(Action @continue, Action<Exception>? exceptionHandler = null)
         {
             _ = task.ContinueWith(t =>
             {
-                completion();
-                ReportException(t, exceptionHandler);
+                try { @continue(); }
+                finally { ReportException(t, exceptionHandler); }
             });
-        }
-
-        public Task TimeoutAfter(TimeSpan timeout)
-        {
-            return TimeoutAfterImpl(task, timeout);
         }
     }
 
@@ -41,41 +35,25 @@ internal static class TaskExtension
             });
         }
 
-        public void FireAndForget(Action completion, Action<Exception>? exceptionHandler = null)
+        public void FireAndForget(Action @continue, Action<Exception>? exceptionHandler = null)
         {
             _ = task.ContinueWith(t =>
             {
-                completion();
-                ReportException(t, exceptionHandler);
+                try { @continue(); }
+                finally { ReportException(t, exceptionHandler); }
             });
-        }
-
-        public Task TimeoutAfter(TimeSpan timeout)
-        {
-            return TimeoutAfterImpl(task, timeout);
-        }
-    }
-
-    // Taken from https://stackoverflow.com/a/22078975/2304737
-    private static async Task TimeoutAfterImpl(Task task, TimeSpan timeout)
-    {
-        using var cts = new CancellationTokenSource();
-        var completedTask = await Task.WhenAny(task, Task.Delay(timeout, cts.Token));
-        if (completedTask == task)
-        {
-            cts.Cancel();
-            await task;  // Very important in order to propagate exceptions
         }
     }
 
     private static void ReportException(Task task, Action<Exception>? exceptionHandler)
     {
-        if (task.IsFaulted == false)
+        if (task is { IsFaulted: false, IsCanceled: false })
             return;
 
-        Exception? ex = task.Exception;
-        while (ex is { InnerException: not null })
-            ex = ex.InnerException;
+        var ex = task.IsCanceled
+            ? new TaskCanceledException(task)
+            : task.Exception!.GetBaseException();
+
         exceptionHandler?.Invoke(ex);
     }
 }

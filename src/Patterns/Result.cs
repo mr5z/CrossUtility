@@ -17,8 +17,10 @@ public enum ErrorCode
 	InvalidParameter = 3,
 
 	NotSupported = 4,
+	
+	NotHandled = 5,
 
-	Cancelled = 5,
+	Cancelled = 6,
 }
 
 public interface IResult

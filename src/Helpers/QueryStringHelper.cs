@@ -14,7 +14,9 @@ public static class QueryStringHelper
         where T : class
     {
         var result = JsonHelper.ToKeyValuePairs(model, flags);
-        return string.Join("&", result.Select(e => $"{e.Key}={WebUtility.UrlEncode(e.Value?.ToString())}"));
+        return string.Join("&", result
+	        .Where(e => e.Value is not null)
+	        .Select(e => $"{e.Key}={WebUtility.UrlEncode(e.Value!.ToString())}"));
     }
 
     public static Dictionary<string, object> ToDictionary(string queryString)
