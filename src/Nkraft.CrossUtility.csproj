@@ -10,7 +10,7 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/mr5z/CrossUtility</RepositoryUrl>
-    <PackageReleaseNotes>- Minor improvements and bug fixes</PackageReleaseNotes>
+    <PackageReleaseNotes>Minor improvements and bug fixes</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/mr5z/CrossUtility</PackageProjectUrl>
     <Version>1.0.10</Version>
     <AssemblyVersion>1.0.10</AssemblyVersion>
