@@ -12,9 +12,9 @@
     <RepositoryUrl>https://github.com/mr5z/CrossUtility</RepositoryUrl>
     <PackageReleaseNotes>Minor improvements and bug fixes</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/mr5z/CrossUtility</PackageProjectUrl>
-    <Version>1.0.10</Version>
-    <AssemblyVersion>1.0.10</AssemblyVersion>
-    <FileVersion>1.0.10</FileVersion>
+    <Version>1.0.11.1</Version>
+    <AssemblyVersion>1.0.11.1</AssemblyVersion>
+    <FileVersion>1.0.11.1</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 

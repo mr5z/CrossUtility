@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nkraft.CrossUtility.Services;
 
-public interface IHttpService
+internal interface IHttpService
 {
     HttpClient HttpClient { get; }
     

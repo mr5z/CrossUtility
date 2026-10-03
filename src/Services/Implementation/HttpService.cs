@@ -8,7 +8,7 @@ using Nkraft.CrossUtility.Helpers;
 
 namespace Nkraft.CrossUtility.Services.Implementation;
 
-public class HttpService(HttpClient httpClient) : IHttpService
+internal class HttpService(HttpClient httpClient) : IHttpService
 {
     private readonly HttpClient _httpClient = httpClient;
 
