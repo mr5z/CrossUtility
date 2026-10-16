@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -32,6 +33,12 @@ public interface IResult
 	public ErrorCode ErrorCode { get; }
 
 	string? ErrorMessage { get; }
+
+	/// <summary>
+	/// The exception that caused the failure, if any. Kept so callers that need to fail fast
+	/// (e.g. app startup) can rethrow the original instead of a message-only substitute.
+	/// </summary>
+	Exception? Exception { get; }
 }
 
 public abstract class ResultBase
@@ -90,28 +97,33 @@ public sealed class Result<T> : ResultBase, IResult
 
 	public ErrorCode ErrorCode { get; }
 
+	public Exception? Exception { get; }
+
 	internal Result(T value)
 	{
 		Value = value;
 		IsSuccess = true;
 		ErrorCode = ErrorCode.Unknown;
 		ErrorMessage = null;
+		Exception = null;
 	}
 
-	internal Result(ErrorCode errorCode, string errorMessage)
+	internal Result(ErrorCode errorCode, Exception? exception, string errorMessage)
 	{
 		Value = default;
 		IsSuccess = false;
 		ErrorMessage = errorMessage;
 		ErrorCode = errorCode;
+		Exception = exception;
 	}
 
-	internal Result(ErrorCode errorCode, string format, params object?[] args)
+	internal Result(ErrorCode errorCode, Exception? exception, string format, params object?[] args)
 	{
 		Value = default;
 		IsSuccess = false;
 		ErrorMessage = FormatString(format, args);
 		ErrorCode = errorCode;
+		Exception = exception;
 	}
 
 	public bool TryGetValue([NotNullWhen(true)] out T? value)
@@ -137,17 +149,48 @@ public static class Result
 		=> new Result<Unit>(value: Unit.Instance);
 
 	public static IResult Fail(ErrorCode errorCode, string errorMessage)
-		=> new Result<Unit>(errorCode, errorMessage);
+		=> new Result<Unit>(errorCode, exception: null, errorMessage);
 
 	public static IResult Fail(ErrorCode errorCode, string format, params object?[] args)
-		=> new Result<Unit>(errorCode, format, args);
+		=> new Result<Unit>(errorCode, exception: null, format, args);
+
+	public static IResult Fail(ErrorCode errorCode, Exception? exception, string errorMessage)
+		=> new Result<Unit>(errorCode, exception, errorMessage);
+
+	public static IResult Fail(ErrorCode errorCode, Exception? exception, string format, params object?[] args)
+		=> new Result<Unit>(errorCode, exception, format, args);
 
 	public static Result<TValue> Ok<TValue>(TValue value)
 		=> new(value);
 
 	public static Result<TValue> Fail<TValue>(ErrorCode errorCode, string errorMessage)
-		=> new(errorCode, errorMessage);
+		=> new(errorCode, exception: null, errorMessage);
 
 	public static Result<TValue> Fail<TValue>(ErrorCode errorCode, string format, params object?[] args)
-		=> new(errorCode, format, args);
+		=> new(errorCode, exception: null, format, args);
+
+	public static Result<TValue> Fail<TValue>(ErrorCode errorCode, Exception? exception, string errorMessage)
+		=> new(errorCode, exception, errorMessage);
+
+	public static Result<TValue> Fail<TValue>(ErrorCode errorCode, Exception? exception, string format, params object?[] args)
+		=> new(errorCode, exception, format, args);
+}
+
+public static class ResultExtensions
+{
+	/// <summary>
+	/// Throws if <paramref name="result"/> failed: rethrows <see cref="IResult.Exception"/> with its
+	/// original stack trace when present, otherwise throws <see cref="InvalidOperationException"/>
+	/// carrying the error code and message. For call sites where a failure is fatal.
+	/// </summary>
+	public static void ThrowIfFailure(this IResult result)
+	{
+		if (result.IsSuccess)
+			return;
+
+		if (result.Exception is { } exception)
+			ExceptionDispatchInfo.Capture(exception).Throw();
+
+		throw new InvalidOperationException($"[{result.ErrorCode}] {result.ErrorMessage}");
+	}
 }

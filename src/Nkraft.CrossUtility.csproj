@@ -10,11 +10,11 @@
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/mr5z/CrossUtility</RepositoryUrl>
-    <PackageReleaseNotes>Minor improvements and bug fixes</PackageReleaseNotes>
+    <PackageReleaseNotes>IResult.Exception, Result.Fail(exception, ...) overloads, IResult.ThrowIfFailure()</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/mr5z/CrossUtility</PackageProjectUrl>
-    <Version>1.0.11.1</Version>
-    <AssemblyVersion>1.0.11.1</AssemblyVersion>
-    <FileVersion>1.0.11.1</FileVersion>
+    <Version>1.0.12</Version>
+    <AssemblyVersion>1.0.12</AssemblyVersion>
+    <FileVersion>1.0.12</FileVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
